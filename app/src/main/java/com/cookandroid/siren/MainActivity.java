@@ -1,15 +1,16 @@
 package com.cookandroid.siren;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private TextView timerTextView;
     private Button startButton;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,15 +19,29 @@ public class MainActivity extends AppCompatActivity {
 
         timerTextView = findViewById(R.id.timerTextView);
         startButton = findViewById(R.id.startButton);
+        mediaPlayer = MediaPlayer.create(this, R.raw.sound);
 
         // 클릭 이벤트
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startTimer();
-                startButton.setEnabled(false);
-            }
+        startButton.setOnClickListener(view -> {
+            startSound();
+            startButton.setEnabled(false);
         });
+    }
+
+    private void startSound() {
+        // 무한 반복
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+
+        // 30초 후 무한 재생 취소
+        startButton.postDelayed(() -> {
+            mediaPlayer.setLooping(false); // 무한 반복 해제
+            mediaPlayer.pause(); // 사운드 재생 중지
+            startButton.setEnabled(true);
+        }, 30000);
+
+        // 타이머 시작
+        startTimer();
     }
 
     private void startTimer() {
@@ -47,5 +62,12 @@ public class MainActivity extends AppCompatActivity {
                 startButton.setEnabled(true);
             }
         }.start();
+    }
+
+    // Activity가 호출하는 마지막 메소드(맨 마지막에 실행하는 함수)
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.release();
     }
 }
