@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    // 최대 시간 (30초)
+    static final int MAXIMUM_SECONDS = 30000;
     private TextView timerTextView;
     private Button startButton;
     private MediaPlayer mediaPlayer;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.setLooping(false); // 무한 반복 해제
             mediaPlayer.pause(); // 사운드 재생 중지
             startButton.setEnabled(true);
-        }, 30000);
+        }, MAXIMUM_SECONDS);
 
         // 타이머 시작
         startTimer();
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startTimer() {
         // new CountDownTimer(타이머 총 시간, 간격)
-        new CountDownTimer(30000, 1000) {
+        new CountDownTimer(MAXIMUM_SECONDS, 1000) {
             // onTick() :  간격마다 호출됨
             @Override
             public void onTick(long millisUntilFinished) {
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
-    // Activity가 호출하는 마지막 메소드(맨 마지막에 실행하는 함수)
+    // Activity가 호출하는 마지막 메소드(마지막에 실행하는 함수)
     @Override
     protected void onDestroy() {
         super.onDestroy();
