@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private void startSound() {
         // 무한 반복
         mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+        mediaPlayer.start();    // 시작
 
         // 30초 후 무한 재생 취소
         startButton.postDelayed(() -> {
